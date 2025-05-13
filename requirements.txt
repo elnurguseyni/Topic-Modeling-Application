@@ -1,0 +1,14 @@
+streamlit
+pandas
+numpy
+scikit-learn
+gensim
+bertopic
+top2vec
+openai
+requests
+matplotlib
+plotly
+rpy2
+nltk
+xlsxwriter
