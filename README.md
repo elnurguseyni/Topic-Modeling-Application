@@ -53,7 +53,6 @@ streamlit run stm_streamlit_interface.py
 ```
 
 **Note:**
-- There is no separate `stm_server.py`.
 - `stm_streamlit_interface.py` automatically calls `stm_model_runner.R` using Python’s `subprocess`.
 - The main app (`main_topic_modeling_app.py`) directly handles LDA, BERTopic, and Top2Vec in Python.
 
