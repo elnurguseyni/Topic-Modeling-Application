@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import time
 
-# Additional imports for logging
+
 from datetime import datetime
 import os
 def log_results(dataset_name, method, num_topics, coherence_umass, coherence_cv, topic_stability, topic_diversity, topic_uniqueness, processing_time):
@@ -28,7 +28,6 @@ def log_results(dataset_name, method, num_topics, coherence_umass, coherence_cv,
     else:
         log_df.to_csv(log_file, index=False)
 
-# --- Topic Details Logging ---
 def log_topic_details(dataset_name, method, topic_num, top_words, llm_label=None, processing_time=None):
     detail_file = "topic_modeling_details.csv"
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -60,7 +59,7 @@ from sklearn.decomposition import LatentDirichletAllocation
 import pyLDAvis.gensim_models
 import pyLDAvis
 
-# NLTK imports for lemmatization and POS tagging
+
 from nltk.stem import WordNetLemmatizer
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
@@ -187,11 +186,11 @@ if uploaded_file is not None:
                 for idx, topic in enumerate(lda_model.components_):
                     terms = [vectorizer.get_feature_names_out()[i] for i in topic.argsort()[:-int(num_words)-1:-1]]
                     topic_words.append(terms)
-                # Calculate processing time before logging topic details
+           
                 processing_time = time.time() - start_time
                 for idx, terms in enumerate(topic_words):
                     st.write(f"**Topic {idx+1}:**", terms)
-                    # Log topic details (without LLM label)
+                   
                     log_topic_details(
                         dataset_name=uploaded_file.name,
                         method=method,
@@ -221,7 +220,7 @@ if uploaded_file is not None:
                 st.write(f"**Topic Diversity:** {topic_diversity:.4f}")
                 st.write(f"**Topic Uniqueness:** {topic_uniqueness:.4f}")
 
-                # Log results to CSV
+              
                 st.write(f"⏱️ **Processing Time:** {processing_time:.2f} seconds")
                 log_results(
                     dataset_name=uploaded_file.name,
@@ -257,7 +256,7 @@ if uploaded_file is not None:
                     for idx, words in enumerate(topic_words):
                         label = generate_label(words)
                         st.write(f"**Topic {idx+1}:** {label}")
-                        # Log topic details with LLM label
+                        
                         log_topic_details(
                             dataset_name=uploaded_file.name,
                             method=method,
@@ -272,20 +271,20 @@ if uploaded_file is not None:
                 topic_model = train_bertopic(docs)
                 st.success("BERTopic Model Trained!")
                 topics = topic_model.get_topic_info()
-                topics = topics[topics["Topic"] != -1]  # exclude outliers
+                topics = topics[topics["Topic"] != -1] 
                 st.subheader("Discovered Topics:")
                 topic_words = []
                 for _, row in topics.iterrows():
                     topic_id = int(row["Topic"])
                     top_words = [word for word, _ in topic_model.get_topic(topic_id)[:10]]
                     topic_words.append(top_words)
-                # Calculate processing time before logging topic details
+                
                 processing_time = time.time() - start_time
                 for _, row in topics.iterrows():
                     topic_id = int(row["Topic"])
                     top_words = [word for word, _ in topic_model.get_topic(topic_id)[:10]]
                     st.write(f"**Topic {topic_id + 1}:** {', '.join(top_words)}")
-                    # Log topic details (without LLM label), now with processing_time
+                    
                     log_topic_details(
                         dataset_name=uploaded_file.name,
                         method=method,
@@ -315,7 +314,7 @@ if uploaded_file is not None:
                 st.write(f"**Topic Diversity:** {topic_diversity:.4f}")
                 st.write(f"**Topic Uniqueness:** {topic_uniqueness:.4f}")
 
-                # Log results to CSV
+                
                 st.write(f"⏱️ **Processing Time:** {processing_time:.2f} seconds")
                 log_results(
                     dataset_name=uploaded_file.name,
@@ -351,7 +350,7 @@ if uploaded_file is not None:
                     for idx, words in enumerate(topic_words):
                         label = generate_label(words)
                         st.write(f"**Topic {idx+1}:** {label}")
-                        # Log topic details with LLM label
+                        
                         log_topic_details(
                             dataset_name=uploaded_file.name,
                             method=method,
@@ -376,13 +375,13 @@ if uploaded_file is not None:
                         topic_id = int(row["Topic"])
                         top_words = [word for word, _ in topic_model.get_topic(topic_id)[:10]]
                         topic_words.append(top_words)
-                    # Calculate processing time before logging topic details
+                    
                     processing_time = time.time() - start_time
                     for _, row in topics.iterrows():
                         topic_id = int(row["Topic"])
                         top_words = [word for word, _ in topic_model.get_topic(topic_id)[:10]]
                         st.write(f"**Topic {topic_id + 1}:** {', '.join(top_words)}")
-                        # Log topic details (without LLM label), now with processing_time
+                        
                         log_topic_details(
                             dataset_name=uploaded_file.name,
                             method=method,
@@ -448,7 +447,7 @@ if uploaded_file is not None:
                         for idx, words in enumerate(topic_words):
                             label = generate_label(words)
                             st.write(f"**Topic {idx+1}:** {label}")
-                            # Log topic details with LLM label
+                            
                             log_topic_details(
                                 dataset_name=uploaded_file.name,
                                 method=method,
@@ -463,11 +462,11 @@ if uploaded_file is not None:
                 model = train_top2vec(docs)
                 st.success("Top2Vec Model Trained!")
                 topic_words, word_scores, topic_nums = model.get_topics()
-                # Calculate processing time before logging topic details
+                
                 processing_time = time.time() - start_time
                 for idx, words in enumerate(topic_words):
                     st.write(f"**Topic {idx+1}:**", words)
-                    # Log topic details (without LLM label), now with processing_time
+                    
                     log_topic_details(
                         dataset_name=uploaded_file.name,
                         method=method,
@@ -497,7 +496,7 @@ if uploaded_file is not None:
                 st.write(f"**Topic Diversity:** {topic_diversity:.4f}")
                 st.write(f"**Topic Uniqueness:** {topic_uniqueness:.4f}")
 
-                # Log results to CSV
+                
                 st.write(f"⏱️ **Processing Time:** {processing_time:.2f} seconds")
                 log_results(
                     dataset_name=uploaded_file.name,
@@ -533,7 +532,7 @@ if uploaded_file is not None:
                     for idx, words in enumerate(topic_words):
                         label = generate_label(words)
                         st.write(f"**Topic {idx+1}:** {label}")
-                        # Log topic details with LLM label
+                        
                         log_topic_details(
                             dataset_name=uploaded_file.name,
                             method=method,
@@ -547,31 +546,31 @@ if uploaded_file is not None:
 else:
     st.info("Please upload a dataset to proceed.")
 
-# --- Sidebar log viewer ---
+
 st.sidebar.markdown("### Session Log Viewer")
 if st.sidebar.checkbox("Show Topic Modeling Logs"):
     log_file = "topic_modeling_logs.csv"
     if os.path.exists(log_file):
         log_data = pd.read_csv(log_file, on_bad_lines='skip')
-        # Add selectboxes for Dataset and Method filtering
+        
         dataset_options = ["All"] + sorted(log_data["Dataset"].unique().tolist())
         method_options = ["All"] + sorted(log_data["Method"].unique().tolist())
         selected_dataset = st.sidebar.selectbox("Filter by Dataset", dataset_options)
         selected_method = st.sidebar.selectbox("Filter by Method", method_options)
-        # Apply filters
+        
         filtered_data = log_data.copy()
         if selected_dataset != "All":
             filtered_data = filtered_data[filtered_data["Dataset"] == selected_dataset]
         if selected_method != "All":
             filtered_data = filtered_data[filtered_data["Method"] == selected_method]
-        # Check for and note if Processing Time (s) is present
+        
         if "Processing Time (s)" in filtered_data.columns:
             st.sidebar.write("⏱️ Processing Time (s) per run is included in the log below:")
         st.sidebar.dataframe(filtered_data)
     else:
         st.sidebar.info("No log data available yet.")
 
-# --- Sidebar topic details viewer ---
+
 st.sidebar.markdown("### Topic Details Log Viewer")
 if st.sidebar.checkbox("Show Topic Details Log"):
     detail_file = "topic_modeling_details.csv"
@@ -589,7 +588,7 @@ if st.sidebar.checkbox("Show Topic Details Log"):
     else:
         st.sidebar.info("No topic details log data available yet.")
 
-# --- Sidebar log management ---
+
 st.sidebar.markdown("### Manage Logs")
 if st.sidebar.button("Clear Logs"):
     try:
